@@ -1,13 +1,18 @@
-from flask import Blueprint, jsonify
+from flask import Flask, jsonify, request
 
-api = Blueprint("api", __name__)
-
-
-@api.get("/")
-def health() -> tuple[dict[str, str], int]:
-    return jsonify(status="healthy", service="devsecops-pipeline-flask"), 200
+app = Flask(__name__)
 
 
-@api.get("/health")
-def health_alias() -> tuple[dict[str, str], int]:
-    return jsonify(status="healthy"), 200
+@app.get("/health")
+def health():
+    return jsonify(status="ok")
+
+
+@app.get("/api/greet")
+def greet():
+    name = request.args.get("name", "mundo")
+    return jsonify(message=f"Olá, {name}!")
+
+
+if __name__ == "__main__":
+    app.run(host="127.0.0.1", port=5000)

@@ -1,22 +1,15 @@
-import pytest
-
-from app import create_app
+from app.main import app
 
 
-@pytest.fixture()
-def client():
-    app = create_app()
-    app.config.update(TESTING=True)
-    return app.test_client()
-
-
-def test_root(client):
-    response = client.get("/")
-    assert response.status_code == 200
-    assert response.get_json()["status"] == "healthy"
-
-
-def test_health(client):
+def test_health():
+    client = app.test_client()
     response = client.get("/health")
     assert response.status_code == 200
-    assert response.get_json() == {"status": "healthy"}
+    assert response.get_json()["status"] == "ok"
+
+
+def test_greet():
+    client = app.test_client()
+    response = client.get("/api/greet?name=Lucas")
+    assert response.status_code == 200
+    assert "Lucas" in response.get_json()["message"]
