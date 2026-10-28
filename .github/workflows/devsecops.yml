@@ -26,10 +26,10 @@ jobs:
       - run: pytest --cov=app --cov-report=xml tests/
       - run: bandit -r app -ll
       - run: pip-audit -r requirements.txt
-      - uses: github/codeql-action/init@v3
+      - uses: github/codeql-action/init@v4
         with:
           languages: python
-      - uses: github/codeql-action/analyze@v3
+      - uses: github/codeql-action/analyze@v4
 
   dependency-review:
     if: github.event_name == 'pull_request'
@@ -62,7 +62,7 @@ jobs:
           output: trivy-results.sarif
           severity: CRITICAL,HIGH
           ignore-unfixed: true
-      - uses: github/codeql-action/upload-sarif@v3
+      - uses: github/codeql-action/upload-sarif@v4
         if: always()
         with:
           sarif_file: trivy-results.sarif
