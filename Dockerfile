@@ -1,11 +1,11 @@
 # ---- Stage 1: build ----
-FROM python:3.8 AS builder
+FROM python:3.12-slim AS builder
 WORKDIR /build
 COPY requirements.txt .
 RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # ---- Stage 2: runtime ----
-FROM python:3.8
+FROM python:3.12-slim
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1
 
@@ -16,9 +16,9 @@ COPY --from=builder /install /usr/local
 COPY app ./app
 
 USER appuser
-EXPOSE 8080
+EXPOSE 8000
 
 HEALTHCHECK --interval=30s --timeout=3s \
-  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')" || exit 1
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')" || exit 1
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app.main:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.main:app"]
