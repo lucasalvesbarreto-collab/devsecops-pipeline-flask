@@ -16,9 +16,9 @@ COPY --from=builder /install /usr/local
 COPY app ./app
 
 USER appuser
-EXPOSE 8000
+EXPOSE 8080
 
 HEALTHCHECK --interval=30s --timeout=3s \
-  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/health')" || exit 1
+  CMD python -c "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health')" || exit 1
 
-CMD ["gunicorn", "--bind", "0.0.0.0:8000", "app.main:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:8080", "app.main:app"]
