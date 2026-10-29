@@ -16,7 +16,3 @@ def greet():
 
 if __name__ == "__main__":
     app.run(host="127.0.0.1", port=5000)
-
-
-# Apenas para teste do Gitleaks
-GITHUB_TOKEN_FAKE = "ghp_1234567890abcdefghijklmnopqrstuvwxyzABCD"
